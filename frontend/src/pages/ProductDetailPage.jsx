@@ -153,6 +153,7 @@ const ProductDetailPage = () => {
             </Typography>
           </Box>
 
+          {/* Nombre */}
           <Typography
             variant={isMobile ? "h6" : "h5"}
             fontWeight={700}
@@ -181,6 +182,7 @@ const ProductDetailPage = () => {
             />
           </Stack>
 
+          {/* Precio */}
           <Typography
             variant={isMobile ? "h5" : "h4"}
             fontWeight={700}
@@ -202,25 +204,31 @@ const ProductDetailPage = () => {
             )}
           </Box>
 
-          {/* 🔹 Botón compacto y más corrido a la derecha */}
+          {/* Botón compacto y centrado */}
           <Button
             variant="contained"
-            color="primary"
-            startIcon={<AddShoppingCartIcon sx={{ fontSize: 18 }} />}
-            sx={{
-              mb: 4,
-              py: 0.5,
-              px: 1.5,
-              fontSize: "0.85rem",
-              minWidth: "unset",
-              borderRadius: 2,
-              alignSelf: isMobile ? "stretch" : "flex-start",
-              ml: isMobile ? 0 : 6, // 👉 más a la derecha en desktop
-            }}
+            startIcon={<AddShoppingCartIcon />}
             onClick={handleAdd}
             disabled={outOfStock || cartLoading}
-            fullWidth={isMobile}
             aria-label={outOfStock ? "Sin stock" : "Agregar al carrito"}
+            sx={{
+              mb: 4,
+              px: 3,
+              py: 0.8,
+              alignSelf: "center", // 🔹 centrado en la columna
+              fontWeight: 700,
+              fontSize: "0.9rem",
+              backgroundColor: outOfStock ? "#c0392b" : "#2ecc71",
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: outOfStock ? "#922b21" : "#27ae60",
+              },
+              "&.Mui-disabled": {
+                backgroundColor: "#c0392b",
+                color: "#fff",
+                opacity: 1,
+              },
+            }}
           >
             {outOfStock ? "Sin stock" : "Agregar al carrito"}
           </Button>
@@ -247,7 +255,6 @@ const ProductDetailPage = () => {
 };
 
 export default ProductDetailPage;
-
 
 
 

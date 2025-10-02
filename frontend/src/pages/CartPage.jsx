@@ -77,7 +77,6 @@ const CartPage = () => {
 
   return (
     <Container maxWidth="md" sx={{ py: { xs: 3, md: 4 } }}>
-      {/* 🔹 Título en blanco */}
       <Typography variant="h4" fontWeight={700} gutterBottom sx={{ color: "#fff" }}>
         Carrito de Compras
       </Typography>
@@ -92,13 +91,7 @@ const CartPage = () => {
         <Typography sx={{ color: "#fff" }}>No hay productos en el carrito.</Typography>
       ) : (
         <>
-          <Paper
-            sx={{
-              p: { xs: 1, md: 2 },
-              mb: 3,
-              backgroundColor: "rgba(50,50,50,0.7)",
-            }}
-          >
+          <Paper sx={{ p: { xs: 1, md: 2 }, mb: 3, backgroundColor: "rgba(50,50,50,0.7)" }}>
             {items.map((item) => {
               const p = getProductObj(item);
               const id = getProductId(item);
@@ -128,7 +121,6 @@ const CartPage = () => {
                     },
                   }}
                 >
-                  {/* Izquierda */}
                   <Box
                     sx={{
                       display: "flex",
@@ -157,12 +149,7 @@ const CartPage = () => {
                         label={p.code || item.code || "N/A"}
                         sx={{ fontWeight: 700, mb: 0.3 }}
                       />
-                      <Typography
-                        fontWeight={600}
-                        variant="body2"
-                        noWrap
-                        sx={{ color: "#fff" }}
-                      >
+                      <Typography fontWeight={600} variant="body2" noWrap sx={{ color: "#fff" }}>
                         {p.name || item.name || "Producto"}
                       </Typography>
                       <Typography variant="caption" sx={{ color: "#ddd" }}>
@@ -185,7 +172,6 @@ const CartPage = () => {
                     </Box>
                   </Box>
 
-                  {/* Derecha / Controls */}
                   <Stack
                     direction="row"
                     spacing={1}
@@ -245,7 +231,6 @@ const CartPage = () => {
 
             <Divider sx={{ my: 2, borderColor: "#666" }} />
 
-            {/* Totales */}
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Typography variant="h6" sx={{ color: "#fff" }}>
                 Total
@@ -260,47 +245,57 @@ const CartPage = () => {
             </Box>
           </Paper>
 
-          {/* Botones finales centrados */}
+          {/* Botones finales compactos, iguales y centrados */}
           <Stack
             direction={{ xs: "column", md: "row" }}
             spacing={2}
-            justifyContent="center" // 👉 centrados respecto al contenedor
+            justifyContent="center"
             sx={{ mt: 2 }}
           >
-            {/* 🔹 Vaciar carrito */}
             <Button
               onClick={handleClear}
               disabled={loading}
               sx={{
+                px: 2.5,
+                py: 0.6,
+                minWidth: 160,
                 backgroundColor: "#d32f2f",
                 color: "#fff",
                 fontWeight: 600,
-                minWidth: 180,
-                px: 2.5,
                 "&:hover": {
                   backgroundColor: "#9a0007",
+                },
+                "&.Mui-disabled": {
+                  backgroundColor: "#d32f2f",
+                  color: "#fff",
+                  opacity: 0.8,
                 },
               }}
             >
               Vaciar carrito
             </Button>
 
-            {/* 🔹 Continuar compra */}
             <Button
               variant="contained"
               color="primary"
               onClick={handleCheckout}
               disabled={loading}
               sx={{
-                fontWeight: 600,
-                minWidth: 180,
                 px: 2.5,
+                py: 0.6,
+                minWidth: 160,
+                fontWeight: 600,
                 boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
                 transition: "all 0.2s ease-in-out",
                 "&:hover": {
                   backgroundColor: "#115293",
                   boxShadow: "0 6px 16px rgba(0,0,0,0.25)",
                   transform: "translateY(-2px)",
+                },
+                "&.Mui-disabled": {
+                  backgroundColor: "#115293",
+                  color: "#fff",
+                  opacity: 0.8,
                 },
               }}
             >
@@ -314,6 +309,8 @@ const CartPage = () => {
 };
 
 export default CartPage;
+
+
 
 
 

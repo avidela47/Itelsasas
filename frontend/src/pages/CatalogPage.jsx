@@ -103,269 +103,277 @@ function CatalogPage() {
     );
 
   return (
-    <>
-      <Box sx={{ position: "relative", minHeight: "100vh", py: 4 }}>
-        <Container maxWidth="xl">
-          {/* 🔥 Destacados */}
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              mb: 2,
-            }}
+    <Box sx={{ position: "relative", minHeight: "100vh", py: 4 }}>
+      <Container maxWidth="xl">
+        {/* 🔥 Destacados */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            mb: 2,
+          }}
+        >
+          <LocalFireDepartmentIcon sx={{ fontSize: 36, color: "#e53935" }} />
+          <Typography
+            variant="h4"
+            fontWeight={500}
+            sx={{ mt: 0, letterSpacing: "0.5px", color: "#fff" }}
           >
-            <LocalFireDepartmentIcon sx={{ fontSize: 36, color: "#e53935" }} />
-            <Typography
-              variant="h4"
-              fontWeight={500}
-              sx={{ mt: 0, letterSpacing: "0.5px", color: "white" }}
-            >
-              Destacados
-            </Typography>
+            Destacados
+          </Typography>
+        </Box>
+        <ProductCarousel products={products.slice(0, 10)} />
+
+        {/* 📌 Título con icono */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            mb: 3,
+            mt: 4,
+          }}
+        >
+          <StorefrontIcon sx={{ fontSize: 36, color: "#2ecc71" }} />
+          <Typography
+            variant="h4"
+            fontWeight={500}
+            sx={{ mt: 0, letterSpacing: "0.5px", color: "#fff" }}
+          >
+            Catálogo
+          </Typography>
+        </Box>
+
+        {/* 🔍 Barra de búsqueda y filtros */}
+        <Paper
+          sx={{
+            p: 2,
+            mb: 3,
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            borderRadius: 2,
+            boxShadow: 3,
+            bgcolor: "rgba(20,20,20,0.7)",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          <Box sx={{ flex: 1 }}>
+            <TextField
+              fullWidth
+              label="Buscar producto"
+              variant="outlined"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              InputLabelProps={{ style: { color: "#fff" } }}
+              InputProps={{ style: { color: "#fff" } }}
+            />
           </Box>
-          <ProductCarousel products={products.slice(0, 10)} />
 
-          {/* 📌 Título con icono */}
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              mb: 3,
-              mt: 4,
-            }}
-          >
-            <StorefrontIcon sx={{ fontSize: 36, color: "#2ecc71" }} />
-            <Typography
-              variant="h4"
-              fontWeight={500}
-              sx={{ mt: 0, letterSpacing: "0.5px", color: "white" }}
-            >
-              Catálogo
-            </Typography>
+          <Box sx={{ flex: 1, display: "flex", gap: 2 }}>
+            <FormControl sx={{ flex: 1 }}>
+              <InputLabel sx={{ color: "#fff" }}>Marca</InputLabel>
+              <Select
+                value={brandFilter}
+                label="Marca"
+                onChange={(e) => setBrandFilter(e.target.value)}
+                sx={{ color: "#fff" }}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      bgcolor: "#111",
+                      color: "#fff",
+                    },
+                  },
+                }}
+              >
+                <MenuItem value="">Todas</MenuItem>
+                {uniqueBrands.map((brand) => (
+                  <MenuItem key={brand} value={brand}>
+                    {brand}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <FormControl sx={{ flex: 1 }}>
+              <InputLabel sx={{ color: "#fff" }}>Rubro</InputLabel>
+              <Select
+                value={categoryFilter}
+                label="Rubro"
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                sx={{ color: "#fff" }}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      bgcolor: "#111",
+                      color: "#fff",
+                    },
+                  },
+                }}
+              >
+                <MenuItem value="">Todos</MenuItem>
+                {uniqueCategories.map((cat) => (
+                  <MenuItem key={cat} value={cat}>
+                    {cat}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Box>
+        </Paper>
 
-          {/* 🔍 Barra de búsqueda y filtros */}
-          <Paper
-            sx={{
-              p: 2,
-              mb: 3,
-              display: "flex",
-              alignItems: "center",
-              gap: 2,
-              borderRadius: 2,
-              boxShadow: 3,
-              bgcolor: "rgba(255,255,255,0.15)",
-              backdropFilter: "blur(8px)",
-            }}
-          >
-            <Box sx={{ flex: 1 }}>
-              <TextField
-                fullWidth
-                label="Buscar producto"
-                variant="outlined"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                InputLabelProps={{ style: { color: "#fff" } }}
-                InputProps={{ style: { color: "#fff" } }}
-              />
-            </Box>
+        {!loading && !error && filteredProducts.length === 0 && (
+          <Alert severity="info">No hay productos para mostrar.</Alert>
+        )}
 
-            <Box sx={{ flex: 1, display: "flex", gap: 2 }}>
-              <FormControl sx={{ flex: 1 }}>
-                <InputLabel sx={{ color: "#fff" }}>Marca</InputLabel>
-                <Select
-                  value={brandFilter}
-                  label="Marca"
-                  onChange={(e) => setBrandFilter(e.target.value)}
-                  sx={{ color: "#fff" }}
-                  MenuProps={{
-                    PaperProps: {
-                      sx: {
-                        bgcolor: "#2b2b2b", // Fondo oscuro
-                        color: "#fff",     // Texto blanco
-                      },
-                    },
-                  }}
-                >
-                  <MenuItem value="" sx={{ color: "#fff" }}>
-                    Todas
-                  </MenuItem>
-                  {uniqueBrands.map((brand) => (
-                    <MenuItem key={brand} value={brand} sx={{ color: "#fff" }}>
-                      {brand}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+        {/* 📦 Tarjetas catálogo */}
+        <Grid container spacing={3} sx={{ pl: 0 }}>
+          {filteredProducts.map((p) => {
+            const img = resolveImage(p.photo);
+            const outOfStock = !p.stock || p.stock <= 0;
 
-              <FormControl sx={{ flex: 1 }}>
-                <InputLabel sx={{ color: "#fff" }}>Rubro</InputLabel>
-                <Select
-                  value={categoryFilter}
-                  label="Rubro"
-                  onChange={(e) => setCategoryFilter(e.target.value)}
-                  sx={{ color: "#fff" }}
-                  MenuProps={{
-                    PaperProps: {
-                      sx: {
-                        bgcolor: "#2b2b2b", // Fondo oscuro
-                        color: "#fff",     // Texto blanco
-                      },
-                    },
-                  }}
-                >
-                  <MenuItem value="" sx={{ color: "#fff" }}>
-                    Todos
-                  </MenuItem>
-                  {uniqueCategories.map((cat) => (
-                    <MenuItem key={cat} value={cat} sx={{ color: "#fff" }}>
-                      {cat}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-          </Paper>
-
-          {!loading && !error && filteredProducts.length === 0 && (
-            <Alert severity="info">No hay productos para mostrar.</Alert>
-          )}
-
-          {/* 📦 Tarjetas catálogo */}
-          <Grid container spacing={3} sx={{ pl: 0 }}>
-            {filteredProducts.map((p) => {
-              const img = resolveImage(p.photo);
-              const outOfStock = !p.stock || p.stock <= 0;
-
-              return (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={2}
-                  key={p._id}
+            return (
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={2}
+                key={p._id}
+                sx={{
+                  flexBasis: { xs: "100%", sm: "50%", md: "33.33%", lg: "20%" },
+                  maxWidth: { xs: "100%", sm: "50%", md: "33.33%", lg: "20%" },
+                }}
+              >
+                <Card
+                  component={Link}
+                  to={`/product/${p._id}`}
                   sx={{
-                    flexBasis: { xs: "100%", sm: "50%", md: "33.33%", lg: "20%" },
-                    maxWidth: { xs: "100%", sm: "50%", md: "33.33%", lg: "20%" },
+                    textDecoration: "none",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    borderRadius: 3,
+                    boxShadow: 3,
+                    background: "linear-gradient(135deg, rgba(0,0,0,0.85), rgba(0,0,0,0.65))", // 🔹 negros con transparencia
+                    "&:hover": {
+                      transform: "scale(1.03)",
+                      boxShadow: 6,
+                      background: "linear-gradient(135deg, rgba(40,40,40,0.9), rgba(20,20,20,0.7))",
+                    },
+                    transition: "all 0.3s ease",
                   }}
                 >
-                  <Card
-                    component={Link}
-                    to={`/product/${p._id}`}
-                    sx={{
-                      textDecoration: "none",
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      borderRadius: 3,
-                      boxShadow: 3,
-                      bgcolor: "#2e2e2e",
-                      "&:hover": {
-                        transform: "scale(1.03)",
-                        boxShadow: 6,
-                        bgcolor: "#3a3a3a",
-                      },
-                      transition: "all 0.3s ease",
-                    }}
-                  >
-                    <CardMedia
-                      component="img"
-                      height="160"
-                      image={img}
-                      alt={p.name}
-                      sx={{ objectFit: "contain", bgcolor: "#444" }}
-                    />
-                    <CardContent sx={{ flexGrow: 1, textAlign: "left" }}>
+                  <CardMedia
+                    component="img"
+                    height="160"
+                    image={img}
+                    alt={p.name}
+                    sx={{ objectFit: "contain", bgcolor: "#111" }}
+                  />
+                  <CardContent sx={{ flexGrow: 1, textAlign: "left" }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1 }}>
+                      <LabelIcon sx={{ fontSize: 18, color: "#ff5252" }} />
+                      <Typography variant="body2" fontWeight={700} sx={{ color: "#fff" }}>
+                        {p.code || "SIN CÓDIGO"}
+                      </Typography>
+                    </Box>
+
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1 }}>
+                      <InventoryIcon sx={{ fontSize: 18, color: "#fbc02d" }} />
+                      <Typography variant="body2" fontWeight={600} sx={{ color: "#fff" }}>
+                        {outOfStock ? "Sin stock" : `${p.stock} disponibles`}
+                      </Typography>
+                    </Box>
+
+                    {p.brand && (
                       <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1 }}>
-                        <LabelIcon sx={{ fontSize: 18, color: "#ff5252" }} />
-                        <Typography variant="body2" fontWeight={700} sx={{ color: "#fff" }}>
-                          {p.code || "SIN CÓDIGO"}
+                        <FactoryIcon sx={{ fontSize: 18, color: "#bbb" }} />
+                        <Typography variant="body2" sx={{ color: "#fff" }}>
+                          {p.brand}
                         </Typography>
                       </Box>
+                    )}
 
+                    {(p.category || p.rubro) && (
                       <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1 }}>
-                        <InventoryIcon sx={{ fontSize: 18, color: "#fbc02d" }} />
-                        <Typography variant="body2" fontWeight={600} sx={{ color: "#fff" }}>
-                          {outOfStock ? "Sin stock" : `${p.stock} disponibles`}
+                        <CategoryIcon sx={{ fontSize: 18, color: "#bbb" }} />
+                        <Typography variant="body2" sx={{ color: "#fff" }}>
+                          {p.category || p.rubro}
                         </Typography>
                       </Box>
+                    )}
 
-                      {p.brand && (
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1 }}>
-                          <FactoryIcon sx={{ fontSize: 18, color: "#bbb" }} />
-                          <Typography variant="body2" sx={{ color: "#fff" }}>
-                            {p.brand}
-                          </Typography>
-                        </Box>
-                      )}
+                    <Typography
+                      variant="subtitle1"
+                      fontWeight={600}
+                      sx={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        minHeight: "40px",
+                        mt: 1,
+                        color: "#fff",
+                      }}
+                    >
+                      {p.name}
+                    </Typography>
 
-                      {(p.category || p.rubro) && (
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1 }}>
-                          <CategoryIcon sx={{ fontSize: 18, color: "#bbb" }} />
-                          <Typography variant="body2" sx={{ color: "#fff" }}>
-                            {p.category || p.rubro}
-                          </Typography>
-                        </Box>
-                      )}
+                    <Typography
+                      variant="subtitle1"
+                      fontWeight={700}
+                      sx={{ mt: 1, color: "#2ecc71" }}
+                    >
+                      ${p.priceUSD}
+                    </Typography>
+                  </CardContent>
 
-                      <Typography
-                        variant="subtitle1"
-                        fontWeight={600}
-                        sx={{
-                          display: "-webkit-box",
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: "vertical",
-                          overflow: "hidden",
-                          minHeight: "40px",
-                          mt: 1,
+                  <CardActions sx={{ p: 2, pt: 0 }}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      startIcon={<AddShoppingCartIcon />}
+                      disabled={outOfStock || cartLoading}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (!outOfStock) addToCart(p._id, 1);
+                      }}
+                      sx={{
+                        backgroundColor: outOfStock ? "#c0392b" : "#2ecc71",
+                        color: "#fff",
+                        "&:hover": {
+                          backgroundColor: outOfStock ? "#922b21" : "#27ae60",
+                        },
+                        "&.Mui-disabled": {
+                          backgroundColor: "#c0392b",
                           color: "#fff",
-                        }}
-                      >
-                        {p.name}
-                      </Typography>
-
-                      <Typography
-                        variant="subtitle1"
-                        fontWeight={700}
-                        sx={{ mt: 1, color: "#2ecc71" }}
-                      >
-                        ${p.priceUSD}
-                      </Typography>
-                    </CardContent>
-
-                    <CardActions sx={{ p: 2, pt: 0 }}>
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        startIcon={<AddShoppingCartIcon />}
-                        disabled={outOfStock || cartLoading}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          addToCart(p._id, 1);
-                        }}
-                        sx={{
-                          backgroundColor: "#2ecc71",
-                          "&:hover": { backgroundColor: "#27ae60" },
-                        }}
-                      >
-                        {outOfStock ? "Sin stock" : "Agregar"}
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Container>
-      </Box>
-    </>
+                          opacity: 1,
+                        },
+                      }}
+                    >
+                      {outOfStock ? "Sin stock" : "Agregar"}
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Container>
+    </Box>
   );
 }
 
 export default CatalogPage;
+
+
+
+
+
+
 
 
 
