@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Bloquear carpetas técnicas que no sirven al SEO
+Disallow: /admin/
+Disallow: /cart/
+Disallow: /checkout/
+
+# Sitemap
+Sitemap: https://www.itelsa.com.ar/sitemap.xml
