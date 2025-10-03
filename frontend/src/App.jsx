@@ -52,90 +52,95 @@ function App() {
         sx={{
           position: "fixed",
           inset: 0,
-          zIndex: -1,
+          zIndex: 0,                     // ✅ antes -1: quedaba por debajo del body en algunos casos
+          pointerEvents: "none",         // ✅ no interfiere con clics
           backgroundImage: `url(${background})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
       />
-      <Router>
-        <Routes>
-          <Route path="/" element={<IntroPage />} />
+      
+      {/* Contenido por encima del fondo */}
+      <Box sx={{ position: "relative", zIndex: 1 }}> {/* ✅ subimos el contenido */}
+        <Router>
+          <Routes>
+            <Route path="/" element={<IntroPage />} />
 
-          <Route
-            path="*"
-            element={
-              <>
-                <Navbar />
-                <Routes>
-                  {/* ✅ Aquí agregamos Footer solo en CatalogPage */}
-                  <Route
-                    path="/catalogo"
-                    element={
-                      <>
-                        <CatalogPage />
-                        <Footer /> {/* 👈 Solo aparece en /catalogo */}
-                      </>
-                    }
-                  />
+            <Route
+              path="*"
+              element={
+                <>
+                  <Navbar />
+                  <Routes>
+                    {/* ✅ Footer solo en CatalogPage */}
+                    <Route
+                      path="/catalogo"
+                      element={
+                        <>
+                          <CatalogPage />
+                          <Footer />
+                        </>
+                      }
+                    />
 
-                  <Route path="/product/:id" element={<ProductDetailPage />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/register" element={<RegisterPage />} />
-                  <Route
-                    path="/cart"
-                    element={
-                      <PrivateRoute>
-                        <CartPage />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route
-                    path="/checkout"
-                    element={
-                      <PrivateRoute>
-                        <CheckoutPage />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route
-                    path="/orders/my"
-                    element={
-                      <PrivateRoute>
-                        <MyOrders />
-                      </PrivateRoute>
-                    }
-                  />
-                  <Route path="/checkout-success" element={<CheckoutSuccess />} />
-                  <Route path="/checkout-failure" element={<CheckoutFailure />} />
-                  <Route path="/checkout-pending" element={<CheckoutPending />} />
-                  <Route path="/checkout-cancel" element={<CheckoutCancel />} />
+                    <Route path="/product/:id" element={<ProductDetailPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route
+                      path="/cart"
+                      element={
+                        <PrivateRoute>
+                          <CartPage />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path="/checkout"
+                      element={
+                        <PrivateRoute>
+                          <CheckoutPage />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route
+                      path="/orders/my"
+                      element={
+                        <PrivateRoute>
+                          <MyOrders />
+                        </PrivateRoute>
+                      }
+                    />
+                    <Route path="/checkout-success" element={<CheckoutSuccess />} />
+                    <Route path="/checkout-failure" element={<CheckoutFailure />} />
+                    <Route path="/checkout-pending" element={<CheckoutPending />} />
+                    <Route path="/checkout-cancel" element={<CheckoutCancel />} />
 
-                  {/* ADMIN */}
-                  <Route
-                    path="/admin"
-                    element={
-                      <PrivateRoute adminOnly>
-                        <AdminLayout />
-                      </PrivateRoute>
-                    }
-                  >
-                    <Route index element={<AdminDashboard />} />
-                    <Route path="products" element={<AdminProducts />} />
-                    <Route path="orders" element={<AdminOrders />} />
-                    <Route path="users" element={<AdminUsers />} />
-                    <Route path="catalog" element={<AdminCatalog />} />
-                  </Route>
+                    {/* ADMIN */}
+                    <Route
+                      path="/admin"
+                      element={
+                        <PrivateRoute adminOnly>
+                          <AdminLayout />
+                        </PrivateRoute>
+                      }
+                    >
+                      <Route index element={<AdminDashboard />} />
+                      <Route path="products" element={<AdminProducts />} />
+                      <Route path="orders" element={<AdminOrders />} />
+                      <Route path="users" element={<AdminUsers />} />
+                      <Route path="catalog" element={<AdminCatalog />} />
+                    </Route>
 
-                  <Route path="*" element={<Navigate to="/catalogo" replace />} />
-                </Routes>
-                <ChatBot />
-              </>
-            }
-          />
-        </Routes>
-      </Router>
+                    <Route path="*" element={<Navigate to="/catalogo" replace />} />
+                  </Routes>
+                  <ChatBot />
+                </>
+              }
+            />
+          </Routes>
+        </Router>
+      </Box>
     </ThemeProvider>
   );
 }

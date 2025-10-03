@@ -1,3 +1,4 @@
+// src/components/Navbar.jsx
 import React, { useState } from "react";
 import {
   AppBar,
@@ -46,25 +47,44 @@ function Navbar() {
       }}
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        {/* Logo Itelsa */}
+        {/* Logo Itelsa (mejor nitidez) */}
         <Box
           component={Link}
           to="/"
-          sx={{ display: "flex", alignItems: "center", cursor: "pointer", textDecoration: 'none' }}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            cursor: "pointer",
+            textDecoration: "none",
+          }}
           aria-label="Ir al inicio"
         >
           <Box
             component="img"
             src={itelsaLogo}
             alt="Itelsa Logo"
-            loading="lazy"
+            loading="eager"
             decoding="async"
             width={160}
             height={48}
+            // Si más adelante tenés versión @2x del logo, activá srcSet:
+            // srcSet={`${itelsaLogo} 1x, ${itelsaLogo2x} 2x`}
             sx={{
-              height: { xs: 36, sm: 44, md: 56 },
+              height: { xs: 40, sm: 48, md: 58 },
               maxWidth: "100%",
-              transition: "all 0.3s ease-in-out",
+              objectFit: "contain",
+              // Nitidez y separación del fondo
+              filter: "drop-shadow(0 0 6px rgba(0,0,0,0.25)) contrast(1.05) brightness(1.02)",
+              imageRendering: "auto",
+              backfaceVisibility: "hidden",
+              transform: "translateZ(0)",
+              transition: "transform 180ms ease, filter 180ms ease",
+              // Hover suave y “glow” verde corporativo
+              "&:hover": {
+                transform: "translateY(-1px)",
+                filter:
+                  "drop-shadow(0 0 12px rgba(0,150,80,0.45)) contrast(1.08) brightness(1.05)",
+              },
             }}
           />
         </Box>
@@ -83,10 +103,7 @@ function Navbar() {
 
           {user ? (
             <>
-              <Typography
-                variant="body2"
-                sx={{ mr: 2, fontWeight: "bold", color: "#fff" }}
-              >
+              <Typography variant="body2" sx={{ mr: 2, fontWeight: "bold", color: "#fff" }}>
                 Hola, {user.username}
               </Typography>
 
@@ -95,12 +112,7 @@ function Navbar() {
                   Admin Panel
                 </Button>
               ) : (
-                <Button
-                  sx={{ color: "#fff" }}
-                  component={Link}
-                  to="/orders/my"
-                  startIcon={<ListAlt />}
-                >
+                <Button sx={{ color: "#fff" }} component={Link} to="/orders/my" startIcon={<ListAlt />}>
                   Mis Pedidos
                 </Button>
               )}
@@ -139,44 +151,65 @@ function Navbar() {
           onClose={() => setOpen(false)}
           PaperProps={{
             sx: {
-              backgroundColor: 'rgba(0,0,0,0.75)',
-              color: '#fff',
+              backgroundColor: "rgba(0,0,0,0.75)",
+              color: "#fff",
               width: 280,
-              backdropFilter: 'blur(6px)',
+              backdropFilter: "blur(6px)",
               borderRadius: 2,
               px: 1,
-              boxShadow: '0 12px 40px rgba(0,0,0,0.6)',
+              boxShadow: "0 12px 40px rgba(0,0,0,0.6)",
             },
           }}
         >
           <Box sx={{ width: 260, p: 1 }} role="presentation">
             <Box sx={{ display: "flex", alignItems: "center", p: 1 }}>
-              <Box component="img" src={itelsaLogo} alt="logo" sx={{ height: 40 }} />
+              <Box
+                component="img"
+                src={itelsaLogo}
+                alt="logo"
+                sx={{
+                  height: 44,
+                  objectFit: "contain",
+                  filter: "drop-shadow(0 0 6px rgba(0,0,0,0.25)) contrast(1.05) brightness(1.02)",
+                }}
+              />
             </Box>
             <Divider />
             <List>
               {menuItems.map((mi) => (
                 <ListItemButton key={mi.to} component={Link} to={mi.to} onClick={() => setOpen(false)}>
-                  <ListItemText primary={mi.label} primaryTypographyProps={{ color: '#fff' }} />
+                  <ListItemText primary={mi.label} primaryTypographyProps={{ color: "#fff" }} />
                 </ListItemButton>
               ))}
 
               {user ? (
                 <>
-                  <ListItemButton component={Link} to={isAdmin() ? "/admin" : "/orders/my"} onClick={() => setOpen(false)}>
-                    <ListItemText primary={isAdmin() ? "Admin Panel" : "Mis Pedidos"} primaryTypographyProps={{ color: '#fff' }} />
+                  <ListItemButton
+                    component={Link}
+                    to={isAdmin() ? "/admin" : "/orders/my"}
+                    onClick={() => setOpen(false)}
+                  >
+                    <ListItemText
+                      primary={isAdmin() ? "Admin Panel" : "Mis Pedidos"}
+                      primaryTypographyProps={{ color: "#fff" }}
+                    />
                   </ListItemButton>
-                  <ListItemButton onClick={() => { setOpen(false); handleLogout(); }}>
-                    <ListItemText primary="Cerrar sesión" primaryTypographyProps={{ color: '#fff' }} />
+                  <ListItemButton
+                    onClick={() => {
+                      setOpen(false);
+                      handleLogout();
+                    }}
+                  >
+                    <ListItemText primary="Cerrar sesión" primaryTypographyProps={{ color: "#fff" }} />
                   </ListItemButton>
                 </>
               ) : (
                 <>
                   <ListItemButton component={Link} to="/login" onClick={() => setOpen(false)}>
-                    <ListItemText primary="Login" primaryTypographyProps={{ color: '#fff' }} />
+                    <ListItemText primary="Login" primaryTypographyProps={{ color: "#fff" }} />
                   </ListItemButton>
                   <ListItemButton component={Link} to="/register" onClick={() => setOpen(false)}>
-                    <ListItemText primary="Registro" primaryTypographyProps={{ color: '#fff' }} />
+                    <ListItemText primary="Registro" primaryTypographyProps={{ color: "#fff" }} />
                   </ListItemButton>
                 </>
               )}
@@ -189,6 +222,7 @@ function Navbar() {
 }
 
 export default Navbar;
+
 
 
 

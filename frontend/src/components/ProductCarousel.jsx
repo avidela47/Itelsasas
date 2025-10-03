@@ -51,22 +51,41 @@ function ProductCarousel({ products = [] }) {
           <Card
             onClick={() => navigate(`/product/${p._id}`)}
             sx={{
+              position: "relative", // para la textura ::before
               minWidth: { xs: 260, sm: 300 },
               maxWidth: { xs: 320, sm: 340 },
               height: 140,
               borderRadius: 3,
-              bgcolor: "#2e2e2e",
+              // 🧊 Negro esmerilado (más oscuro) + glass
+              background:
+                "linear-gradient(90deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.46) 100%)",
               color: "#fff",
-              boxShadow: 3,
+              boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
               display: "flex",
               flexDirection: "row",
               cursor: "pointer",
+              border: "1px solid rgba(255,255,255,0.18)",
+              backdropFilter: "blur(6px) saturate(130%)",
               "&:hover": {
                 transform: "scale(1.03)",
-                boxShadow: 6,
-                bgcolor: "#3a3a3a",
+                boxShadow: "0 10px 28px rgba(0,0,0,0.45)",
+                background:
+                  "linear-gradient(90deg, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.52) 100%)",
               },
-              transition: "all 0.3s ease",
+              transition: "all 0.25s ease",
+              // 🎛️ Textura sutil tipo granulado (esmerilado)
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                inset: 0,
+                borderRadius: 12,
+                pointerEvents: "none",
+                // patrón de puntitos muy leves (no tapa el contenido)
+                background:
+                  "radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)",
+                backgroundSize: "4px 4px",
+                opacity: 0.35,
+              },
             }}
           >
             <CardMedia
@@ -74,7 +93,8 @@ function ProductCarousel({ products = [] }) {
               sx={{
                 width: { xs: 90, sm: 110, md: 120 },
                 objectFit: "contain",
-                bgcolor: "#444",
+                // leve base clara para que el producto destaque sobre el esmerilado
+                bgcolor: "rgba(255,255,255,0.10)",
                 borderTopLeftRadius: 12,
                 borderBottomLeftRadius: 12,
               }}
@@ -90,6 +110,7 @@ function ProductCarousel({ products = [] }) {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
+                bgcolor: "transparent",
               }}
             >
               <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
@@ -152,6 +173,9 @@ function ProductCarousel({ products = [] }) {
 }
 
 export default ProductCarousel;
+
+
+
 
 
 

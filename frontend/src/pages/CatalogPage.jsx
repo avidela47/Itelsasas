@@ -30,17 +30,16 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import FactoryIcon from "@mui/icons-material/Factory";
 import CategoryIcon from "@mui/icons-material/Category";
 
-import background from "../assets/Imagen de WhatsApp 2025-09-30 a las 09.25.32_2d304c7f.jpg";
 import ProductCarousel from "../components/ProductCarousel";
 
 // 📐 Medidas centrales
 const DIM = {
-  mediaH: 120,                      // Alto del área de imagen
-  cardRadius: 12,                   // Radio de borde de las cards
-  btnH: 44,                         // Alto del botón
-  cardMinH: { xs: 320, md: 360 },   // Alto mínimo de la card (responsive)
-  nameH: 24,                        // Alto reservado para el nombre (1 línea)
-  priceH: 38,                       // Alto visual de la zona de precio
+  mediaH: 120,
+  cardRadius: 12,
+  btnH: 44,
+  cardMinH: { xs: 320, md: 360 },
+  nameH: 24,
+  priceH: 38,
 };
 
 // 📌 Resolver imagen
@@ -65,11 +64,11 @@ const GREEN_PAL = {
 
 // 🎯 Colores Benetton para íconos y botón
 const COLORS = {
-  code: "#ec008c",      // magenta
-  stock: "#ffd400",     // amarillo
-  brand: "#00b5e2",     // cian
-  category: "#6a1b9a",  // violeta
-  addBtn: "#ff7f00",    // naranja Benetton
+  code: "#ec008c",
+  stock: "#ffd400",
+  brand: "#00b5e2",
+  category: "#6a1b9a",
+  addBtn: "#ff7f00",
   addBtnHover: "#e97000",
 };
 
@@ -140,13 +139,11 @@ function CatalogPage() {
         position: "relative",
         minHeight: "100vh",
         py: 4,
-        backgroundImage: `url(${background})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        background: "transparent",
       }}
     >
       <Container maxWidth="xl">
-        {/* 🔥 Destacados (SIN fondo) */}
+        {/* 🔥 Destacados */}
         <Box
           sx={{
             display: "flex",
@@ -154,6 +151,8 @@ function CatalogPage() {
             gap: 1,
             mb: 2,
             backgroundColor: "transparent",
+            position: "relative",
+            zIndex: 2,
           }}
         >
           <LocalFireDepartmentIcon
@@ -168,7 +167,25 @@ function CatalogPage() {
           </Typography>
         </Box>
 
-        <ProductCarousel products={products.slice(0, 10)} />
+        {/* Carrusel transparente */}
+        <Box
+          sx={{
+            bgcolor: "transparent",
+            position: "relative",
+            zIndex: 1,
+            "& .swiper, & .swiper-wrapper, & .swiper-slide": {
+              background: "transparent !important",
+              backgroundColor: "transparent !important",
+            },
+            "& .MuiPaper-root": {
+              background: "transparent !important",
+              backgroundColor: "transparent !important",
+              boxShadow: "none",
+            },
+          }}
+        >
+          <ProductCarousel products={products.slice(0, 10)} />
+        </Box>
 
         {/* 📌 Catálogo */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 3, mt: 4 }}>
@@ -247,12 +264,11 @@ function CatalogPage() {
           <Alert severity="info">No hay productos para mostrar.</Alert>
         )}
 
-        {/* 📦 Tarjetas Catálogo (medidas unificadas) */}
+        {/* 📦 Tarjetas Catálogo */}
         <Grid container spacing={3} sx={{ pl: 0 }}>
           {filteredProducts.map((p, idx) => {
             const img = resolveImage(p.photo);
             const outOfStock = !p.stock || p.stock <= 0;
-            const pal = GREEN_PAL;
 
             return (
               <Grid
@@ -277,18 +293,31 @@ function CatalogPage() {
                     display: "flex",
                     flexDirection: "column",
                     borderRadius: DIM.cardRadius,
-                    boxShadow: 3,
-                    background: pal.bg,
-                    color: pal.text,
-                    border: `1px solid ${pal.border}`,
-                    backdropFilter: "saturate(120%) blur(2px)",
+                    position: "relative",
+                    background:
+                      "linear-gradient(90deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.46) 100%)",
+                    color: "#fff",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
+                    border: "1px solid rgba(255,255,255,0.18)",
+                    backdropFilter: "blur(6px) saturate(130%)",
                     "&:hover": {
                       transform: "scale(1.03)",
-                      boxShadow: 6,
-                      background: pal.hover,
-                      borderColor: pal.border,
+                      boxShadow: "0 10px 28px rgba(0,0,0,0.45)",
+                      background:
+                        "linear-gradient(90deg, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.52) 100%)",
                     },
                     transition: "all 0.25s ease",
+                    "&::before": {
+                      content: '""',
+                      position: "absolute",
+                      inset: 0,
+                      borderRadius: DIM.cardRadius,
+                      pointerEvents: "none",
+                      background:
+                        "radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)",
+                      backgroundSize: "4px 4px",
+                      opacity: 0.35,
+                    },
                   }}
                 >
                   <CardMedia
@@ -296,9 +325,9 @@ function CatalogPage() {
                     image={img}
                     alt={p.name}
                     sx={{
-                      height: DIM.mediaH,              // alto fijo del área de imagen
+                      height: DIM.mediaH,
                       objectFit: "contain",
-                      bgcolor: pal.mediaBg,
+                      bgcolor: "rgba(255,255,255,0.10)",
                       borderTopLeftRadius: DIM.cardRadius,
                       borderTopRightRadius: DIM.cardRadius,
                     }}
@@ -308,7 +337,7 @@ function CatalogPage() {
                     {/* Código */}
                     <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1 }}>
                       <LabelIcon sx={{ fontSize: 18, color: COLORS.code }} />
-                      <Typography variant="body2" fontWeight={700} sx={{ color: pal.text }}>
+                      <Typography variant="body2" fontWeight={700} sx={{ color: "#fff" }}>
                         {p.code || "SIN CÓDIGO"}
                       </Typography>
                     </Box>
@@ -316,7 +345,7 @@ function CatalogPage() {
                     {/* Stock */}
                     <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1 }}>
                       <InventoryIcon sx={{ fontSize: 18, color: COLORS.stock }} />
-                      <Typography variant="body2" fontWeight={700} sx={{ color: pal.text }}>
+                      <Typography variant="body2" fontWeight={700} sx={{ color: "#fff" }}>
                         {outOfStock ? "Sin stock" : `${p.stock} disponibles`}
                       </Typography>
                     </Box>
@@ -325,7 +354,7 @@ function CatalogPage() {
                     {p.brand && (
                       <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1 }}>
                         <FactoryIcon sx={{ fontSize: 18, color: COLORS.brand }} />
-                        <Typography variant="body2" sx={{ color: pal.text }}>
+                        <Typography variant="body2" sx={{ color: "#fff" }}>
                           {p.brand}
                         </Typography>
                       </Box>
@@ -335,13 +364,13 @@ function CatalogPage() {
                     {(p.category || p.rubro) && (
                       <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1 }}>
                         <CategoryIcon sx={{ fontSize: 18, color: COLORS.category }} />
-                        <Typography variant="body2" sx={{ color: pal.text }}>
+                        <Typography variant="body2" sx={{ color: "#fff" }}>
                           {p.category || p.rubro}
                         </Typography>
                       </Box>
                     )}
 
-                    {/* Nombre: 1 renglón, centrado */}
+                    {/* Nombre */}
                     <Typography
                       variant="subtitle1"
                       sx={{
@@ -349,7 +378,7 @@ function CatalogPage() {
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
-                        color: pal.text,
+                        color: "#fff",
                         textAlign: "center",
                         lineHeight: "24px",
                         height: DIM.nameH,
@@ -359,22 +388,21 @@ function CatalogPage() {
                       {p.name}
                     </Typography>
 
-                    {/* Precio: negro, sin negrita, centrado */}
+                    {/* Precio */}
                     <Box sx={{ mt: 1, mb: 0.5, textAlign: "center", minHeight: DIM.priceH }}>
                       <Typography
                         component="div"
                         sx={{
-                          fontWeight: 400, // sin negrita
+                          fontWeight: 700,
                           fontSize: { xs: "1.85rem", sm: "2rem", md: "2.15rem" },
                           lineHeight: 1.08,
-                          color: "#000",   // negro
+                          color: "#2ecc71",
                         }}
                       >
                         ${p.priceUSD}
                       </Typography>
                     </Box>
 
-                    {/* Empuja el botón al fondo si el contenido es corto */}
                     <Box sx={{ flexGrow: 1 }} />
                   </CardContent>
 
@@ -396,15 +424,32 @@ function CatalogPage() {
                       }}
                       sx={{
                         height: DIM.btnH,
-                        borderRadius: 999,           // píldora
+                        borderRadius: 999,
                         textTransform: "none",
-                        backgroundColor: outOfStock ? "#000000" : COLORS.addBtn,
+                        // 🔴 Rojo esmerilado si NO hay stock, negro glass si hay
+                        background: outOfStock
+                          ? "linear-gradient(90deg, rgba(200,0,0,0.80) 0%, rgba(160,0,0,0.70) 100%)"
+                          : "linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.50) 100%)",
+                        border: outOfStock
+                          ? "1px solid rgba(255,100,100,0.55)"
+                          : "1px solid rgba(255,255,255,0.18)",
+                        backdropFilter: "blur(6px) saturate(130%)",
+                        boxShadow: "0 6px 16px rgba(0,0,0,0.35)",
                         color: "#fff",
                         "&:hover": {
-                          backgroundColor: outOfStock ? "#000000" : COLORS.addBtnHover,
+                          background: outOfStock
+                            ? "linear-gradient(90deg, rgba(200,0,0,0.85) 0%, rgba(160,0,0,0.78) 100%)"
+                            : "linear-gradient(90deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.60) 100%)",
+                          transform: outOfStock ? "none" : "translateY(-1px)",
                         },
                         "&.Mui-disabled": {
-                          backgroundColor: "#000000",
+                          // Mantener rojo cuando está deshabilitado por 'Sin stock'
+                          background: outOfStock
+                            ? "linear-gradient(90deg, rgba(200,0,0,0.80) 0%, rgba(160,0,0,0.70) 100%)"
+                            : "linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.40) 100%)",
+                          border: outOfStock
+                            ? "1px solid rgba(255,100,100,0.55)"
+                            : "1px solid rgba(255,255,255,0.18)",
                           color: "#fff",
                           opacity: 1,
                         },
@@ -424,6 +469,12 @@ function CatalogPage() {
 }
 
 export default CatalogPage;
+
+
+
+
+
+
 
 
 
