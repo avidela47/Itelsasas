@@ -64,17 +64,21 @@ function AdminUsers() {
 
       {/* 🔹 Cards resumen */}
       <Grid container spacing={2} sx={{ mb: 3 }} justifyContent="center">
+        {/* Usuarios */}
         <Grid item xs={12} sm={6} md={3}>
           <Card
             sx={{
               bgcolor: "#e1f5fe",
               borderRadius: 3,
               boxShadow: 2,
+              minHeight: 140,
+              display: "flex",
+              alignItems: "center",
               "&:hover": { transform: "scale(1.03)", boxShadow: 6 },
               transition: "all 0.3s ease",
             }}
           >
-            <CardContent>
+            <CardContent sx={{ width: "100%" }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <PeopleIcon sx={{ fontSize: 32, color: "#0288d1" }} />
                 <Box>
@@ -86,27 +90,40 @@ function AdminUsers() {
           </Card>
         </Grid>
 
+        {/* Roles */}
         <Grid item xs={12} sm={6} md={3}>
           <Card
             sx={{
               bgcolor: "#fce4ec",
               borderRadius: 3,
               boxShadow: 2,
+              minHeight: 140,
+              display: "flex",
+              alignItems: "center",
               "&:hover": { transform: "scale(1.03)", boxShadow: 6 },
               transition: "all 0.3s ease",
             }}
           >
-            <CardContent>
+            <CardContent sx={{ width: "100%" }}>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <AssignmentIndIcon sx={{ fontSize: 32, color: "#c2185b" }} />
-                <Box>
+                <Box sx={{ width: "100%" }}>
                   <Typography variant="h6">Roles</Typography>
                   <Grid container spacing={1}>
                     {Object.entries(rolesCount).map(([rol, count]) => (
                       <Grid item xs={12} key={rol}>
-                        <Typography variant="body2">
-                          {rol}: <b>{count}</b>
-                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Typography variant="body2">{rol}</Typography>
+                          <Typography variant="h6" fontWeight={600}>
+                            {count}
+                          </Typography>
+                        </Box>
                       </Grid>
                     ))}
                   </Grid>
@@ -120,7 +137,7 @@ function AdminUsers() {
       {/* Tabla en escritorio, lista de cards en móvil */}
       <Box>
         {isSmUp ? (
-          <Box sx={{ overflowX: 'auto' }}>
+          <Box sx={{ overflowX: "auto" }}>
             <TableContainer component={Paper} sx={{ minWidth: 650 }}>
               <Table sx={{ minWidth: 900 }}>
                 <TableHead sx={{ bgcolor: "#1976d2" }}>
@@ -148,10 +165,18 @@ function AdminUsers() {
               <Grid item xs={12} key={u._id}>
                 <Card>
                   <CardContent>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
                       <Box>
                         <Typography variant="h6">{u.username}</Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>{u.email}</Typography>
+                        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                          {u.email}
+                        </Typography>
                       </Box>
                       <Box>
                         <Typography variant="subtitle2">{u.role}</Typography>
@@ -169,6 +194,8 @@ function AdminUsers() {
 }
 
 export default AdminUsers;
+
+
 
 
 

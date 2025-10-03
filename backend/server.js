@@ -11,6 +11,9 @@ import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import userRoutes from "./routes/user.routes.js";
+import clienteRoutes from "./routes/clienteRoutes.js";
+import proveedorRoutes from "./routes/proveedorRoutes.js";
+import documentoRoutes from "./routes/documentoRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -41,6 +44,9 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/clientes", clienteRoutes);
+app.use("/api/proveedores", proveedorRoutes);
+app.use("/api/documentos", documentoRoutes);
 
 // Ping
 app.get("/ping", (_req, res) => res.json({ msg: "API funcionando 🚀" }));

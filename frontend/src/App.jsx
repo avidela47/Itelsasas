@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider, Box } from "@mui/material";
@@ -23,6 +22,9 @@ import AdminProducts from "./pages/admin/AdminProducts";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminCatalog from "./pages/admin/AdminCatalog";
+import AdminDocumentos from "./pages/admin/AdminDocumentos"; // ✅ Nuevo
+import AdminClientes from "./pages/admin/AdminClientes";     // ✅ Nuevo
+import AdminProveedores from "./pages/admin/AdminProveedores"; // ✅ Nuevo
 
 // 🆕 Intro con video
 import IntroPage from "./pages/IntroPage"; 
@@ -46,14 +48,13 @@ function PrivateRoute({ children, adminOnly = false }) {
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      {/* Fondo global fijo detrás de toda la app */}
       <Box
         component="div"
         sx={{
           position: "fixed",
           inset: 0,
-          zIndex: 0,                     // ✅ antes -1: quedaba por debajo del body en algunos casos
-          pointerEvents: "none",         // ✅ no interfiere con clics
+          zIndex: 0,
+          pointerEvents: "none",
           backgroundImage: `url(${background})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
@@ -61,8 +62,7 @@ function App() {
         }}
       />
       
-      {/* Contenido por encima del fondo */}
-      <Box sx={{ position: "relative", zIndex: 1 }}> {/* ✅ subimos el contenido */}
+      <Box sx={{ position: "relative", zIndex: 1 }}>
         <Router>
           <Routes>
             <Route path="/" element={<IntroPage />} />
@@ -73,7 +73,6 @@ function App() {
                 <>
                   <Navbar />
                   <Routes>
-                    {/* ✅ Footer solo en CatalogPage */}
                     <Route
                       path="/catalogo"
                       element={
@@ -130,6 +129,10 @@ function App() {
                       <Route path="orders" element={<AdminOrders />} />
                       <Route path="users" element={<AdminUsers />} />
                       <Route path="catalog" element={<AdminCatalog />} />
+                      {/* ✅ Nuevos */}
+                      <Route path="documentos" element={<AdminDocumentos />} />
+                      <Route path="clientes" element={<AdminClientes />} />
+                      <Route path="proveedores" element={<AdminProveedores />} />
                     </Route>
 
                     <Route path="*" element={<Navigate to="/catalogo" replace />} />
@@ -146,6 +149,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
