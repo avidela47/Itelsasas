@@ -109,7 +109,6 @@ function AdminDocumentos() {
     }
   };
 
-  // 📌 Listado completo corregido
   const handlePrintListado = () => {
     if (!documentos || documentos.length === 0) {
       alert("⚠️ No hay documentos para imprimir");
@@ -184,7 +183,6 @@ function AdminDocumentos() {
     printWindow.document.close();
   };
 
-  // 📌 Documento individual con encabezado ITELSA
   const handlePrintDoc = (doc) => {
     const printWindow = window.open("", "_blank");
     const html = `
@@ -264,10 +262,18 @@ function AdminDocumentos() {
         Gestión de Documentos
       </Typography>
 
-      {/* Tarjetas */}
+      {/* Tarjetas con hover */}
       <Grid container spacing={2} justifyContent="center" sx={{ mb: 3 }}>
         <Grid item xs={12} sm={4} md={3}>
-          <Card sx={{ bgcolor: "#e3f2fd", borderRadius: 3, boxShadow: 2 }}>
+          <Card
+            sx={{
+              bgcolor: "#e3f2fd",
+              borderRadius: 3,
+              boxShadow: 2,
+              transition: "0.3s",
+              "&:hover": { transform: "scale(1.05)", boxShadow: 6, cursor: "pointer" },
+            }}
+          >
             <CardContent>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <DescriptionIcon sx={{ fontSize: 32, color: "#1976d2" }} />
@@ -280,7 +286,15 @@ function AdminDocumentos() {
           </Card>
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
-          <Card sx={{ bgcolor: "#fff3e0", borderRadius: 3, boxShadow: 2 }}>
+          <Card
+            sx={{
+              bgcolor: "#fff3e0",
+              borderRadius: 3,
+              boxShadow: 2,
+              transition: "0.3s",
+              "&:hover": { transform: "scale(1.05)", boxShadow: 6, cursor: "pointer" },
+            }}
+          >
             <CardContent>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <InventoryIcon sx={{ fontSize: 32, color: "#f57c00" }} />
@@ -293,7 +307,15 @@ function AdminDocumentos() {
           </Card>
         </Grid>
         <Grid item xs={12} sm={4} md={3}>
-          <Card sx={{ bgcolor: "#fce4ec", borderRadius: 3, boxShadow: 2 }}>
+          <Card
+            sx={{
+              bgcolor: "#fce4ec",
+              borderRadius: 3,
+              boxShadow: 2,
+              transition: "0.3s",
+              "&:hover": { transform: "scale(1.05)", boxShadow: 6, cursor: "pointer" },
+            }}
+          >
             <CardContent>
               <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                 <PeopleIcon sx={{ fontSize: 32, color: "#c2185b" }} />
@@ -375,6 +397,34 @@ function AdminDocumentos() {
           </Button>
         </Box>
 
+        {/* Artículos */}
+        {documento.articulos.map((a, i) => (
+          <Box key={i} sx={{ display: "flex", gap: 2, mt: 2 }}>
+            <TextField
+              label="Producto"
+              value={a.producto}
+              onChange={(e) => handleChange(i, "producto", e.target.value)}
+            />
+            <TextField
+              type="number"
+              label="Cantidad"
+              value={a.cantidad}
+              onChange={(e) => handleChange(i, "cantidad", Number(e.target.value))}
+            />
+            <TextField
+              label="Descripción"
+              value={a.descripcion}
+              onChange={(e) => handleChange(i, "descripcion", e.target.value)}
+            />
+            <TextField
+              type="number"
+              label="Precio"
+              value={a.precio}
+              onChange={(e) => handleChange(i, "precio", Number(e.target.value))}
+            />
+          </Box>
+        ))}
+
         <Box sx={{ textAlign: "right", mt: 2, fontWeight: "bold" }}>
           TOTAL: ${calcularTotal().toFixed(2)}
         </Box>
@@ -455,7 +505,7 @@ function AdminDocumentos() {
         </Table>
       </Box>
 
-      {/* Modal de Edición */}
+      {/* Modal */}
       <Dialog open={openModal} onClose={() => setOpenModal(false)} fullWidth maxWidth="md"
         PaperProps={{ sx: { bgcolor: "#0d47a1", color: "white" } }}>
         <DialogTitle>Editar Documento</DialogTitle>
@@ -523,5 +573,8 @@ function AdminDocumentos() {
 }
 
 export default AdminDocumentos;
+
+
+
 
 
