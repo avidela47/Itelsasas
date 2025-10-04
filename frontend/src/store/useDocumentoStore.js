@@ -1,55 +1,62 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/documentos";
-
 export const useDocumentoStore = create((set) => ({
-  documentos: [],
-  loading: false,
+  documentos: [], // siempre array desde el inicio
 
+  // 📌 Obtener todos los documentos
   fetchDocumentos: async () => {
-    set({ loading: true });
     try {
-      const res = await axios.get(API_URL);
-      set({ documentos: res.data, loading: false });
-    } catch (error) {
-      console.error("Error al obtener documentos", error);
-      set({ loading: false });
+      const res = await axios.get("/api/documentos");
+      set({ documentos: Array.isArray(res.data) ? res.data : [] });
+    } catch (err) {
+      console.error("Error al obtener documentos", err);
+      set({ documentos: [] });
     }
   },
 
-  createDocumento: async (data) => {
+  // 📌 Crear y aprobar documento en un solo paso
+  createDocumento: async (doc) => {
     try {
-      const res = await axios.post(API_URL, data);
-      set((state) => ({ documentos: [res.data, ...state.documentos] }));
-    } catch (error) {
-      console.error("Error al crear documento", error);
+      const res = await axios.post("/api/documentos", doc);
+      // Actualizamos estado local agregando el nuevo documento
+      set((state) => ({
+        documentos: [res.data.documento, ...state.documentos],
+      }));
+      return res.data.documento;
+    } catch (err) {
+      console.error("Error al crear documento", err);
+      throw err;
     }
   },
 
-  updateDocumento: async (id, data) => {
+  // 📌 Actualizar documento
+  updateDocumento: async (id, doc) => {
     try {
-      const res = await axios.put(`${API_URL}/${id}`, data);
+      const res = await axios.put(`/api/documentos/${id}`, doc);
       set((state) => ({
         documentos: state.documentos.map((d) =>
           d._id === id ? res.data : d
         ),
       }));
-    } catch (error) {
-      console.error("Error al actualizar documento", error);
+      return res.data;
+    } catch (err) {
+      console.error("Error al actualizar documento", err);
+      throw err;
     }
   },
 
+  // 📌 Eliminar documento
   deleteDocumento: async (id) => {
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      await axios.delete(`/api/documentos/${id}`);
       set((state) => ({
         documentos: state.documentos.filter((d) => d._id !== id),
       }));
-    } catch (error) {
-      console.error("Error al eliminar documento", error);
+    } catch (err) {
+      console.error("Error al eliminar documento", err);
+      throw err;
     }
   },
 }));
-
 

@@ -6,11 +6,11 @@ import {
   Typography,
   Drawer,
   List,
-  ListItem,
   ListItemIcon,
   ListItemText,
   Box,
   IconButton,
+  ListItemButton,
 } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
@@ -51,76 +51,76 @@ function AdminLayout() {
       </Toolbar>
       <Box sx={{ overflow: "auto" }}>
         <List>
-          <ListItem button component={Link} to="/" onClick={() => setMobileOpen(false)}>
+          <ListItemButton component={Link} to="/" onClick={() => setMobileOpen(false)}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Página Principal" />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button component={Link} to="/admin" onClick={() => setMobileOpen(false)}>
+          <ListItemButton component={Link} to="/admin" onClick={() => setMobileOpen(false)}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button component={Link} to="/admin/products" onClick={() => setMobileOpen(false)}>
+          <ListItemButton component={Link} to="/admin/products" onClick={() => setMobileOpen(false)}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <Inventory2Icon />
             </ListItemIcon>
             <ListItemText primary="Productos" />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button component={Link} to="/admin/catalog" onClick={() => setMobileOpen(false)}>
+          <ListItemButton component={Link} to="/admin/catalog" onClick={() => setMobileOpen(false)}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <StoreIcon />
             </ListItemIcon>
             <ListItemText primary="Almacén" />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button component={Link} to="/admin/orders" onClick={() => setMobileOpen(false)}>
+          <ListItemButton component={Link} to="/admin/orders" onClick={() => setMobileOpen(false)}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <ShoppingCartIcon />
             </ListItemIcon>
             <ListItemText primary="Pedidos" />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button component={Link} to="/admin/users" onClick={() => setMobileOpen(false)}>
+          <ListItemButton component={Link} to="/admin/users" onClick={() => setMobileOpen(false)}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <PeopleIcon />
             </ListItemIcon>
             <ListItemText primary="Usuarios" />
-          </ListItem>
+          </ListItemButton>
 
           {/* ✅ NUEVOS */}
-          <ListItem button component={Link} to="/admin/documentos" onClick={() => setMobileOpen(false)}>
+          <ListItemButton component={Link} to="/admin/documentos" onClick={() => setMobileOpen(false)}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <DescriptionIcon />
             </ListItemIcon>
             <ListItemText primary="Documentos" />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button component={Link} to="/admin/clientes" onClick={() => setMobileOpen(false)}>
+          <ListItemButton component={Link} to="/admin/clientes" onClick={() => setMobileOpen(false)}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <GroupIcon />
             </ListItemIcon>
             <ListItemText primary="Clientes" />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button component={Link} to="/admin/proveedores" onClick={() => setMobileOpen(false)}>
+          <ListItemButton component={Link} to="/admin/proveedores" onClick={() => setMobileOpen(false)}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <BusinessIcon />
             </ListItemIcon>
             <ListItemText primary="Proveedores" />
-          </ListItem>
+          </ListItemButton>
 
-          <ListItem button onClick={() => { setMobileOpen(false); handleLogout(); }}>
+          <ListItemButton onClick={() => { setMobileOpen(false); handleLogout(); }}>
             <ListItemIcon sx={{ color: "#fff" }}>
               <ExitToAppIcon />
             </ListItemIcon>
             <ListItemText primary="Cerrar Sesión" />
-          </ListItem>
+          </ListItemButton>
         </List>
       </Box>
     </div>
@@ -193,6 +193,7 @@ function AdminLayout() {
 }
 
 export default AdminLayout;
+
 
 
 
